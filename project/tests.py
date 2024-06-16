@@ -88,6 +88,7 @@ class PerevalTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(serializer_data, response.data)
 
+    # проверяем создание записи о перевале и использование данных пользователя, если он уже есть в БД
     def test_valid_create_and_user_reuse(self):
         data = {
         "beauty_title": "title_9",
@@ -198,3 +199,50 @@ class PerevalTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.pereval_2.refresh_from_db()
         self.assertEqual('', self.pereval_2.connect)
+
+# проверяем отсутствие возможности изменить данные пользователя
+    def test_climber_update(self):
+        data = {
+            '': {
+        "beauty_title": "title_9",
+        "title": "title_1",
+        "other_titles": "title_1",
+        "connect": "title_1",
+        "tourist_id": {
+
+            "email": "ivanov@gmail.ru",
+            "last_name": "Иванов",
+            "first_name": "Иван",
+            "patronymic": "Иванович",
+            "phone": "2222222223"
+        },
+        "coord_id": {
+
+            "latitude": "54.87690019",
+            "longitude": "43.36759009",
+            "height": 1244
+        },
+        "level": {
+
+            "winter_lev": "4A",
+            "spring_lev": "2A",
+            "summer_lev": "1A",
+            "autumn_lev": "3A"
+        },
+        "images": []
+        }
+        }
+
+        json_data = json.dumps(data)
+        response = self.client.patch(
+            reverse('perevals-detail', kwargs={'pk': self.pereval_1.id}),
+            data=json_data,
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.pereval_1.refresh_from_db()
+        self.assertEqual('test1@mail.ru', self.pereval_1.tourist_id.email)
+        self.assertEqual('Test1', self.pereval_1.tourist_id.last_name)
+        self.assertEqual('Test1', self.pereval_1.tourist_id.first_name)
+        self.assertEqual('Test1', self.pereval_1.tourist_id.patronymic)
+        self.assertEqual('79998837756', self.pereval_1.tourist_id.phone)
