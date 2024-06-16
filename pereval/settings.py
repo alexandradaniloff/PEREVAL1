@@ -17,8 +17,8 @@ load_dotenv(find_dotenv())
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-#SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = 'django-insecure-(-1m)90*2#m^_6-^@thc%y3up=462l^*f!4=6%v$*c(g62wd7y'
+SECRET_KEY = os.getenv('SECRET_KEY')
+#SECRET_KEY = 'django-insecure-(-1m)90*2#m^_6-^@thc%y3up=462l^*f!4=6%v$*c(g62wd7y'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
