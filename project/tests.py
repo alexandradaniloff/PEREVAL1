@@ -82,3 +82,8 @@ class PerevalTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
 
     #проверяем получение записи о втором перевале
+    def test_perevall_detail(self):
+        response = self.client.get(reverse('perevals-detail', kwargs={'pk': self.pereval_2.id}))
+        serializer_data = PerevalSerializer(self.pereval_2).data
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(serializer_data, response.data)
